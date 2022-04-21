@@ -1,0 +1,161 @@
+## All available queries on this graphql server
+type Query{
+    helloWorld(name:String!):String
+    userProfile(id:ID!):UserProfileResponse!
+    ##    companyProfile(id:ID!):CompanyProfileResponse!
+    getProfile:GetProfileResponse!
+    getUserProfile:UserProfileResponse!
+    getSkills:[TagOut]!
+    getTags:[TagOut]!
+    getFriends:[FriendsResponse]!
+    getFriendsSuggestion:[FriendsResponse]!
+    getMyExistingSuggestions:[FriendsResponse]!
+    getUserPost:[UserPostOut]!
+}
+type Mutation{
+    login(loginRequest:LoginRequest!):LoginResponse!
+    signup(signupRequest:SignupRequest!):SignupResponse!
+    #    refreshToken(tokenRefreshRequest:TokenRefreshRequest!):TokenRefreshResponse!
+    ##    companySignup(companySignupRequest:CompanySignupRequest!):SubmitResponse!
+    userSignup(userProfileRequest:UserProfileRequest!):SubmitResponse!
+    #    #    confirmAccount(confirmRequest:ConfirmRequest!):ConfirmResponse!
+    newUserPost(newUserPostRequest:NewUserPostRequest!):SubmitResponse!
+    ##    newCompanyPost(newCompanyPostRequest:NewCompanyPostRequest):SubmitResponse!
+    #    #    upload(file:Upload!):String
+    #    #    likePost(id:ID!):Boolean!
+    likePost(postId:ID!):Boolean!
+    sendFriendshipRequest(userId:ID!):Boolean!
+    acceptFriendshipRequest(userId:ID!):Boolean!
+    denyFriendshipRequest(userId:ID!):Boolean!
+    #    #    userSkills(skills:[String]!):SubmitResponse!
+    addUserProfile(userSignupRequest:UserProfileRequest!):Boolean!
+    addTags(tags:[String]!):Boolean!
+    addSkills(skills:[String]!):Boolean!
+}
+#
+# type FriendsResponse
+type FriendsResponse{
+    userId:ID
+    name:String
+    description:String
+    status:String
+}
+# type getProfileResponse
+type GetProfileResponse{
+    userId:ID
+    isActive:Boolean
+    isCompany:Boolean
+    name:String
+    description:String
+}
+# Input for login mutation
+input LoginRequest{
+    email:String!
+    password:String!
+}
+# Login mutation response
+type LoginResponse{
+    success:Boolean!
+    message:String!
+    accessToken:String!
+    refreshToken:String!
+    user:UserResponse!
+}
+type UserResponse{
+    userId:String!
+    isCompany:Boolean!
+    name:String
+    description:String
+    isActive:Boolean!
+}
+# Input for signup mutation
+input SignupRequest{
+    email:String!
+    password:String!
+    isCompany:Boolean!
+}
+# Signup mutation response
+type SignupResponse{
+    success:Boolean!
+    message:String!
+    email:String!
+    isCompany:Boolean!
+}
+## Input for token refresh mutation
+#input TokenRefreshRequest{
+#    refreshToken:String!
+#}
+## Token refresh mutation response
+#type TokenRefreshResponse{
+#    success:Boolean!
+#    message:String!
+#    accessToken:String!
+#    refreshToken:String!
+#}
+## Input for company profile signup mutation
+#input CompanySignupRequest{
+#    name:String!
+#    description:String
+#}
+# Company/User profile signup mutation response
+type SubmitResponse{
+    success:Boolean!
+    message:String!
+}
+# Input for user profile signup mutation
+input UserProfileRequest{
+    firstName:String!
+    lastName:String!
+    username:String!
+    description:String
+    title:String
+    company:String
+    startedAtMonth:String
+    startedAtYear:String
+    finishedAtMonth:String
+    finishedAtYear:String
+    #    file:Upload
+}
+# Input for new user post
+input NewUserPostRequest{
+    content:String
+    #    file:Upload
+}
+## Input for new company post
+#input NewCompanyPostRequest{
+#    content:String!
+#    tags:[String]!
+#}
+type UserProfileResponse{
+    id:ID!
+    username:String
+    firstName:String
+    lastName:String
+    description:String
+    #    posts:[UserPostOut]
+}
+type UserPostOut{
+    postOwner:FriendsResponse
+    userPostId:String
+    content:String
+    createdAt:String
+    #    file:String
+}
+#
+#
+#type CompanyProfileResponse{
+#    id:ID!
+#    name:String
+#    description:String
+#    tags:[TagOut]
+#    posts:[CompanyPostOut]
+#}
+#type CompanyPostOut{
+#    content:String
+#    tags:[TagOut]
+#}
+type TagOut{
+    name:String
+}
+#
+#scalar Upload

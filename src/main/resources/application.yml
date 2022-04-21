@@ -1,23 +1,27 @@
 graphql:
+  graphiql:
+    enabled: true
   servlet:
     mapping: /graphql
     enabled: true
     corsEnabled: true
 spring:
   datasource:
-#    url: jdbc:mysql://localhost:3306/spring_social?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
-    url: jdbc:mariadb://localhost:3306/linkedin_oath2?createDatabaseIfNotExist=true
+    #    url: jdbc:mysql://localhost:3306/spring_social?useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false
+    url: jdbc:mariadb://localhost:3306/linkedin_oauth2?createDatabaseIfNotExist=true
     username: admin
     password: admin
+    driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
     show-sql: true
     hibernate:
       ddl-auto: update
       naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+
     properties:
       hibernate:
-#        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        dialect: org.hibernate.dialect.MariaDB103Dialect
   security:
     oauth2:
       client:
