@@ -46,8 +46,10 @@ public class ProfileCreationService {
         }
         */
 
-            if (userProfileRepository.existsByUsername(userSignupRequest.getUsername())) {
+            if (userProfileRepository.existsByUser(user)) {
                 log.error("Username '{}' already exists.", userSignupRequest.getUsername());
+                user.setEnabled(true);
+                userRepository.save(user);
                 return new SubmitResponse(false, "Username is in use");
             }
 
@@ -72,6 +74,7 @@ public class ProfileCreationService {
 
             userProfileRepository.save(profile);
 
+            user.setEnabled(true);
             user.setUserProfile(profile);
 //            user.setCompanyProfile(null);
             userRepository.save(user);

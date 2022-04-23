@@ -1,6 +1,8 @@
 package ir.manoosheh.mylinkedin.configuration;
 
-import ir.manoosheh.mylinkedin.security.*;
+import ir.manoosheh.mylinkedin.security.CustomUserDetailsService;
+import ir.manoosheh.mylinkedin.security.RestAuthenticationEntryPoint;
+import ir.manoosheh.mylinkedin.security.TokenAuthenticationFilter;
 import ir.manoosheh.mylinkedin.security.oauth2.CustomOAuth2UserService;
 import ir.manoosheh.mylinkedin.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import ir.manoosheh.mylinkedin.security.oauth2.OAuth2AuthenticationFailureHandler;
@@ -18,8 +20,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
-import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -109,7 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**","/graphql","/graphiql")
+                .antMatchers("/auth/**", "/oauth2/**", "/graphql", "/graphiql")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -126,7 +126,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .userService(customOAuth2UserService)
                 .and()
                 .successHandler(oAuth2AuthenticationSuccessHandler)
-                .failureHandler(oAuth2AuthenticationFailureHandler);
+                .failureHandler(oAuth2AuthenticationFailureHandler)
+                .and()
+                .logout()
+//                .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .deleteCookies("JSESSIONID")
+        ;
 
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

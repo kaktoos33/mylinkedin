@@ -46,7 +46,14 @@ public class AuthService {
 
 
             assert user != null;
-            if (!user.getIsCompany() && !(user.getUserProfile() == null)) {
+//            if (user.getIsCompany() && !(user.getCompanyProfile() == null)) {
+//                return new LoginResponse(true, "Tokens have been generated",
+//                        accessToken, refreshToken.getToken(),
+//                        new UserResponse(user.getId().toString(), user.getIsCompany(),
+//                                user.getCompanyProfile().getName(), user.getCompanyProfile().getDescription(), true));
+//            } else
+            // if (!user.getIsCompany() && !(user.getUserProfile() == null)) {
+            if (!(user.getUserProfile() == null)) {
                 return new LoginResponse(true, "Tokens have been generated",
                         accessToken, "refreshToken",
                         new UserResponse(user.getId().toString(), user.getIsCompany(),

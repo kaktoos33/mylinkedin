@@ -1,9 +1,9 @@
 ## All available queries on this graphql server
 type Query{
     helloWorld(name:String!):String
+    getUser:UserResponse!
     userProfile(id:ID!):UserProfileResponse!
     ##    companyProfile(id:ID!):CompanyProfileResponse!
-    getProfile:GetProfileResponse!
     getUserProfile:UserProfileResponse!
     getSkills:[TagOut]!
     getTags:[TagOut]!
@@ -40,14 +40,7 @@ type FriendsResponse{
     description:String
     status:String
 }
-# type getProfileResponse
-type GetProfileResponse{
-    userId:ID
-    isActive:Boolean
-    isCompany:Boolean
-    name:String
-    description:String
-}
+
 # Input for login mutation
 input LoginRequest{
     email:String!
@@ -59,6 +52,7 @@ type LoginResponse{
     message:String!
     accessToken:String!
     refreshToken:String!
+    #    provider:String
     user:UserResponse!
 }
 type UserResponse{

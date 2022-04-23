@@ -5,6 +5,8 @@ import ir.manoosheh.mylinkedin.model.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long> {
 //    @NotNull
@@ -16,6 +18,6 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Long> 
 
     boolean existsByUsername(String username);
 
-    UserProfile findUserProfileByUser(User user);
+    Optional<UserProfile> findUserProfileByUser(User user);
 }
 

@@ -1,14 +1,11 @@
 package ir.manoosheh.mylinkedin.graphql;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import ir.manoosheh.mylinkedin.model.AuthProvider;
 import ir.manoosheh.mylinkedin.model.User;
 import ir.manoosheh.mylinkedin.model.UserPost;
 import ir.manoosheh.mylinkedin.model.UserProfile;
-import ir.manoosheh.mylinkedin.payload.graphql.request.GetProfileResponse;
-import ir.manoosheh.mylinkedin.payload.graphql.response.FriendsResponse;
-import ir.manoosheh.mylinkedin.payload.graphql.response.TagOut;
-import ir.manoosheh.mylinkedin.payload.graphql.response.UserPostOut;
-import ir.manoosheh.mylinkedin.payload.graphql.response.UserProfileResponse;
+import ir.manoosheh.mylinkedin.payload.graphql.response.*;
 import ir.manoosheh.mylinkedin.repository.UserPostRepository;
 import ir.manoosheh.mylinkedin.repository.UserProfileRepository;
 import ir.manoosheh.mylinkedin.repository.UserRepository;
@@ -55,6 +52,31 @@ public class QueryResolver implements GraphQLQueryResolver {
         return userPostService.getUserPost();
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public UserResponse getUser() {
+        User user = userService.getUser();
+        UserResponse userResponse = new UserResponse();
+        if (user.getProvider() != AuthProvider.local) {
+            userResponse.setUserId(String.valueOf(user.getId()));
+            userResponse.setActive(userProfileRepository.existsByUser(user));
+            userResponse.setName(user.getName());
+            userResponse.setDescription("google authentication");
+        } else {
+            userResponse.setUserId(String.valueOf(user.getId()));
+            userResponse.setActive(user.isEnabled());
+            userResponse.setCompany(user.getIsCompany());
+//        if (!user.getIsCompany()) {
+            userResponse.setName(user.getUserProfile().getFullName());
+            userResponse.setDescription(user.getUserProfile().getDescription());
+//        } else {
+//            profileResponse.setName(user.getCompanyProfile().getName());
+//            profileResponse.setDescription(user.getCompanyProfile().getDescription());
+//        }
+        }
+        return userResponse;
+
+    }
+
     @PreAuthorize(("isAuthenticated()"))
     public List<FriendsResponse> getFriends() {
         return friendshipService.getFriendsResponse();
@@ -70,24 +92,6 @@ public class QueryResolver implements GraphQLQueryResolver {
         return friendshipService.getMyExistingSuggestions();
     }
 
-    @PreAuthorize("isAuthenticated()")
-    public GetProfileResponse getProfile() {
-        User user = userService.getUser();
-        GetProfileResponse profileResponse = new GetProfileResponse();
-
-        profileResponse.setUserId(String.valueOf(user.getId()));
-        profileResponse.setActive(user.isEnabled());
-        profileResponse.setCompany(user.getIsCompany());
-        if (!user.getIsCompany()) {
-            profileResponse.setName(user.getUserProfile().getFullName());
-            profileResponse.setDescription(user.getUserProfile().getDescription());
-        } else {
-//            profileResponse.setName(user.getCompanyProfile().getName());
-//            profileResponse.setDescription(user.getCompanyProfile().getDescription());
-        }
-
-        return profileResponse;
-    }
 
     @PreAuthorize("isAuthenticated()")
     public List<TagOut> getSkills() {
