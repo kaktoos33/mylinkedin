@@ -1,0 +1,618 @@
+{
+	"info": {
+		"_postman_id": "6ee809b3-a6aa-48cc-a5d2-f113ab6d1976",
+		"name": "LinkedIn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation RegisterMutation($email: String!, $password: String!, $isCompany: Boolean!) {\r\n        signup(signupRequest: { email: $email, password: $password, isCompany:$isCompany }) {\r\n            success\r\n            message\r\n            email\r\n            isCompany\r\n        }\r\n    }",
+						"variables": "{\r\n    \"email\":\"anoosh@gmail.com\",\r\n    \"password\":\"123456789\",\r\n    \"isCompany\": false\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation LoginMutation($email: String!, $password: String!) {\r\n      login(loginRequest: { email: $email, password: $password }) {\r\n        success\r\n        message\r\n        accessToken\r\n        refreshToken\r\n        user {\r\n          userId\r\n          isCompany\r\n          isActive\r\n          name\r\n          description\r\n        }\r\n      }\r\n    }",
+						"variables": "{\r\n    \"email\": \"anoosh@gmail.com\",\r\n    \"password\":\"123456789\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-user-profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4OTkzNzc5LCJpYXQiOjE2Mzg5NzU3Nzl9.m8wNtf6sVdn3U0TUItflxOLapsO7x6ft_pA_6ANLzADk-33fZixQsXj1fzE0ZW-U2Suf9kYAk2dC1106alng-Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation addUserProfile($firstName: String! ,$lastName: String!, $username: String!, $description: String, \r\n        $title: String, $company: String, $startedAtMonth: String, $startedAtYear: String, $finishedAtMonth: String, $finishedAtYear: String) {\r\n        addUserProfile(userSignupRequest: { firstName: $firstName, lastName: $lastName, username: $username , description:$description,\r\n        title: $title, company: $company, startedAtMonth:$startedAtMonth , startedAtYear:$startedAtYear, finishedAtMonth:$finishedAtMonth , finishedAtYear:$finishedAtYear}) \r\n    }",
+						"variables": "{\r\n    \"firstName\" : \"fname\" ,\r\n    \"lastName\" : \"lname\", \r\n    \"username\": \"uname\", \r\n    \"description\": \"describ\", \r\n    \"title\" : \"title\",\r\n    \"company\" : \"comp\", \r\n    \"startedAtMonth\" : \"01\",\r\n    \"startedAtYear\" : \"1345\", \r\n    \"finishedAtMonth\" : \"02\" , \r\n    \"finishedAtYear\" : \"1346\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create-user-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NDcxNDczLCJpYXQiOjE2Mzg0NTM0NzN9.8NQJbBRwowkxenbrrFVQ1Xf3DNHdY96vnijiFgiYD2huvigFjBOtuXXg9W1Kzca3zKfXcm1eXbd7b-cZNujDxw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": " mutation newUserPost ($content:String!) {\r\n    newUserPost(newUserPostRequest:{content:$content}){\r\n    success\r\n    message\r\n  }\r\n  }",
+						"variables": "{\r\n    \"content\":\"This is first user0 post\"\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NDcxNDczLCJpYXQiOjE2Mzg0NTM0NzN9.8NQJbBRwowkxenbrrFVQ1Xf3DNHdY96vnijiFgiYD2huvigFjBOtuXXg9W1Kzca3zKfXcm1eXbd7b-cZNujDxw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation newUserPost ($postId:ID!) {\r\n    likePost(postId:$postId)\r\n    \r\n  \r\n  }",
+						"variables": "{\r\n    \"postId\": 1\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send-friendship-request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2g1QGdtYWlsLmNvbSIsImV4cCI6MTYzODE0NTg0MywiaWF0IjoxNjM4MTI3ODQzfQ.jBRaHvJucQe6_Djq0pRdbKj81YuLUZYeFpVfWPYssmJLIEgBcpBtXcrRL_SbXchU88EXhVBLMBmQJjK0-VkukA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation sendFriendshipRequest ($userId:ID!) {\r\n    sendFriendshipRequest(userId:$userId)\r\n    \r\n  \r\n  }",
+						"variables": "{\r\n    \"userId\": 4\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "accept-friendship-request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2gzQGdtYWlsLmNvbSIsImV4cCI6MTYzODE0NTQyNSwiaWF0IjoxNjM4MTI3NDI1fQ.pPDPzVkjLrqEjFRy0vmeKHyhY9uFDhF6ryC60BFJDrfo17BATZyR-YNDcg_6JRYlj7PEv5Nlpgysq7ZXY1vvoQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation acceptFriendshipRequest ($userId:ID!) {\r\n    acceptFriendshipRequest(userId:$userId)    \r\n  \r\n  }",
+						"variables": "{\r\n    \"userId\": 2\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deny-friendship-request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2g0QGdtYWlsLmNvbSIsImV4cCI6MTYzODE0NTk1MiwiaWF0IjoxNjM4MTI3OTUyfQ.bnvEEW2SvWC6kU6qhcyLGVteXdwZg8U72O56JNddd05CMOBNjy_0FF5Dhs6xp0QucFWFIiOmljQMcq1qrirgdQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation denyFriendshipRequest ($userId:ID!) {\r\n    denyFriendshipRequest(userId:$userId)    \r\n  \r\n  }",
+						"variables": "{\r\n    \"userId\": 5\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NTcyNDQzLCJpYXQiOjE2Mzg1NTQ0NDN9.iCxAFk4Xw8cOHEpKkXZNtGtRBUSFWliKDcABr6XL0wVXC17UiUS2RffnSHzl_aW-rvYiHwGQgwwbPvn46vVaUw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getProfile{\r\n  getProfile{\r\n    userId\r\n    isActive\r\n    isCompany\r\n    name\r\n    description\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-skills",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NjQ5NjE3LCJpYXQiOjE2Mzg2MzE2MTd9.2o-nzLYB2KwfAflAnAVAIMv-zfmIPaVy7xLvf3rlvmAfbuxcOGBxYr9Znb0sRf8Vti7CEnM2maf34NsmVJYyzA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getSkills{\r\n    getSkills{        \r\n        name       \r\n    }    \r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-tags",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4Mzg0NDE5LCJpYXQiOjE2MzgzNjY0MTl9.VT3EaGVmSTyodGnZqI_7EmPEJQO1dYmTaai9HzwJJ3aU1DV1iLhaaLDBV57jwd-C-Zta38C3vrJCorfFzyA1Dg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": " mutation addTags ($tags:[String]!) {\r\n    addTags(tags:$tags)\r\n  }",
+						"variables": "{\r\n    \"tags\":[\"hr\",\"ai\",\"react\"]\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-skills",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NTcyNDQzLCJpYXQiOjE2Mzg1NTQ0NDN9.iCxAFk4Xw8cOHEpKkXZNtGtRBUSFWliKDcABr6XL0wVXC17UiUS2RffnSHzl_aW-rvYiHwGQgwwbPvn46vVaUw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": " mutation addSkills ($skills:[String]!) {\r\n    addSkills(skills:$skills)\r\n  }",
+						"variables": "{\r\n    \"skills\":[\"hr\",\"react\"]\r\n}"
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user-profile",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM4NTcyNDQzLCJpYXQiOjE2Mzg1NTQ0NDN9.iCxAFk4Xw8cOHEpKkXZNtGtRBUSFWliKDcABr6XL0wVXC17UiUS2RffnSHzl_aW-rvYiHwGQgwwbPvn46vVaUw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getUserProfile{\r\n    getUserProfile{\r\n        id\r\n        firstName\r\n        lastName\r\n        username\r\n        description\r\n    }    \r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-friends-suggestion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM5MDk3OTAwLCJpYXQiOjE2MzkwNzk5MDB9.4ScB1vY8THlXqoVFc2iWHcUyuF20UgJ0IRJR2frB2M0LXk5kr24xf371U0BLFWP_lnSsu1Ko6uYypWPWTvn4xg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getFriendsSuggestion{\r\n  getFriendsSuggestion{\r\n    userId\r\n    name\r\n    description\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-existing-suggestion",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2hAZ21haWwuY29tIiwiZXhwIjoxNjM5MDk3OTAwLCJpYXQiOjE2MzkwNzk5MDB9.4ScB1vY8THlXqoVFc2iWHcUyuF20UgJ0IRJR2frB2M0LXk5kr24xf371U0BLFWP_lnSsu1Ko6uYypWPWTvn4xg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getMyExistingSuggestions{\r\n  getMyExistingSuggestions{\r\n    userId\r\n    name\r\n    description\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getFriends",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2gyQGdtYWlsLmNvbSIsImV4cCI6MTYzOTE0NjAzOSwiaWF0IjoxNjM5MTI4MDM5fQ.Xm-0fyYfuC-wCrFw0To8jFnBOzx4VVsVbDCcW-WwpTHltBApVLvudoxZfkHRgO_e0AyZ976KqyPsWnK_RwfGGw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getFriends{\r\n  getFriends{\r\n    userId\r\n    name\r\n    description\r\n    status\r\n  }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get-user-post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbm9vc2gyQGdtYWlsLmNvbSIsImV4cCI6MTYzOTM0NDIwOSwiaWF0IjoxNjM5MzI2MjA5fQ.RxBEmmOl_9ihGL6G5xR8arObAKV7M3gHQNLNR02fKckgxQz3CUtPFUT2j-_VbltdE0XnUW0V4lnlCioFDZNbrQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query getUserPost {\r\n    getUserPost{\r\n    postOwner {\r\n        userId\r\n        name\r\n        description\r\n        status\r\n      }\r\n      userPostId\r\n      content\r\n    }\r\n  }",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/graphql/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graphql",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
