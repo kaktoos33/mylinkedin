@@ -44,6 +44,7 @@ public class UserPostService {
                                 .convertUserToFriendResponse(s.getUserProfile().getUser()),
                         s.getId().toString(),
                         s.getContent(),
+                        s.getMedia(),
                         s.getCreatedDate()
                 ))
                 .sorted(comparatorUserPostOnDate.reversed())

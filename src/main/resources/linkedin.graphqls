@@ -2,7 +2,7 @@
 type Query{
     helloWorld(name:String!):String
     getUser:UserResponse!
-    userProfile(id:ID!):UserProfileResponse!
+    #    userProfile(id:ID!):UserProfileResponse!
     ##    companyProfile(id:ID!):CompanyProfileResponse!
     getUserProfile:UserProfileResponse!
     getSkills:[TagOut]!
@@ -113,7 +113,8 @@ input UserProfileRequest{
 # Input for new user post
 input NewUserPostRequest{
     content:String
-    #    file:Upload
+    media:String
+    #file:Upload
 }
 ## Input for new company post
 #input NewCompanyPostRequest{
@@ -121,18 +122,23 @@ input NewUserPostRequest{
 #    tags:[String]!
 #}
 type UserProfileResponse{
-    id:ID!
-    username:String
-    firstName:String
-    lastName:String
+    firstName:String!
+    lastName:String!
+    username:String!
     description:String
-    #    posts:[UserPostOut]
+    title:String
+    company:String
+    startedAtMonth:String
+    startedAtYear:String
+    finishedAtMonth:String
+    finishedAtYear:String
 }
 type UserPostOut{
     postOwner:FriendsResponse
     userPostId:String
     content:String
     createdAt:String
+    media:String
     #    file:String
 }
 #

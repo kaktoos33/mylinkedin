@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NewUserPostRequest {
     private String content;
+    private String media;
 }

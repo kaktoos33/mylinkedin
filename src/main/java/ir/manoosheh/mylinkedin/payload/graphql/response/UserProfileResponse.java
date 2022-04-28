@@ -8,11 +8,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileResponse {
-    private String id;
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String description;
+    private String firstName = "";
+    private String lastName = "";
+    private String username = "";
+    private String description = "";
+    private String company = "";
+    private String startedAtMonth = "";
+    private String startedAtYear = "";
+    private String finishedAtMonth = "";
+    private String finishedAtYear = "";
+    private String title = "";
 //    private List<UserPostOut> posts;
 }
 

@@ -46,11 +46,40 @@ public class CloudinaryService {
                 Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
                 String publicId = uploadResult.get("public_id").toString();
                 logger.info("The user " + user.getEmail() + " successfully uploaded the file: " + publicId);
-                return publicId;
+                String cloudUrl = cloudinary.url().secure(true)
+                        .publicId(publicId)
+                        .generate();
+                return cloudUrl;
             } catch (Exception ex) {
                 logger.error("The user " + user.getEmail() + " failed to load to Cloudinary the image file: " + file.getName());
                 logger.error(ex.getMessage());
-                return null;
+                return "Error" + ex.getMessage();
+            }
+        } else {
+            logger.error("Error: a not authenticated user tried to upload a file (email: " + user.getEmail() + ")");
+            return null;
+        }
+    }
+
+    public String uploadVideo(MultipartFile file) {
+        logger.trace("Called CloudinaryService.upload with args: ** and the multipart file");
+        User user = userService.getUser();
+        if (user != null) {
+            try {
+//                Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+                Map uploadResult = cloudinary.uploader().upload(file.getBytes(),
+                        ObjectUtils.asMap("resource_type", "video"));
+                String publicId = uploadResult.get("public_id").toString();
+                logger.info("The user " + user.getEmail() + " successfully uploaded the file: " + publicId);
+                String cloudUrl = cloudinary.url().secure(true)
+                        .publicId(publicId)
+                        .generate();
+//                return cloudUrl;
+                return uploadResult.get("url").toString();
+            } catch (Exception ex) {
+                logger.error("The user " + user.getEmail() + " failed to load to Cloudinary the image file: " + file.getName());
+                logger.error(ex.getMessage());
+                return "Error" + ex.getMessage();
             }
         } else {
             logger.error("Error: a not authenticated user tried to upload a file (email: " + user.getEmail() + ")");

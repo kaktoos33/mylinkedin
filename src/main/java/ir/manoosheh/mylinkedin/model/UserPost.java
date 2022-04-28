@@ -1,6 +1,9 @@
 package ir.manoosheh.mylinkedin.model;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,13 +19,14 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Entity
 @Table(name = "userpost")
-public class UserPost implements Comparable<UserPost>{
+public class UserPost implements Comparable<UserPost> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name="content",columnDefinition="ٰVARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci")
+    //    @Column(name="content",columnDefinition="ٰVARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci")
     private String content;
+    private String media;
 
     private String file;
 

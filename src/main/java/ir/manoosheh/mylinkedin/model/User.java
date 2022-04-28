@@ -1,7 +1,9 @@
 package ir.manoosheh.mylinkedin.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -12,7 +14,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
-@ToString
+//@ToString
 @RequiredArgsConstructor
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -142,5 +144,22 @@ public class User {
     @Override
     public int hashCode() {
         return getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+
+                ", provider=" + provider +
+                ", providerId='" + providerId + '\'' +
+                ", username='" + username + '\'' +
+                ", enabled=" + enabled +
+                ", isCompany=" + isCompany +
+                ", avatar='" + avatar + '\'' +
+
+                '}';
     }
 }

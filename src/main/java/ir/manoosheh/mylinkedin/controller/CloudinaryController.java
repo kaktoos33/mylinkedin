@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/cloud")
+//@RequestMapping("/cloud")
 public class CloudinaryController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -30,6 +30,13 @@ public class CloudinaryController {
     String upload(@RequestParam("file") MultipartFile file) {
         return cloudinaryService.upload(file);
     }
+
+    @PostMapping("/uploadVideo")
+    public @ResponseBody
+    String uploadVideo(@RequestParam("file") MultipartFile file) {
+        return cloudinaryService.uploadVideo(file);
+    }
+
 
     /**
      * Upload an Avatar to Cloudinary.

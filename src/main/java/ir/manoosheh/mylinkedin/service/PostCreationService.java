@@ -45,6 +45,7 @@ public class PostCreationService {
         UserPost post = new UserPost();
         post.setContent(newUserPostRequest.getContent());
         post.setCreatedDate(new Date());
+        post.setMedia(newUserPostRequest.getMedia());
         post.setUserProfile(user.getUserProfile());
 
         userPostRepository.save(post);

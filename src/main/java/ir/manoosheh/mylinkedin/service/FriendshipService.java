@@ -104,13 +104,23 @@ public class FriendshipService {
     }
 
     public List<FriendsResponse> getNotFriendNotFriendOfFriend() {
-        return this.getNotFriendNotFriendOfFriendList().stream()
+        List<User> notFriendNotFriendOfFriend = this.getNotFriendNotFriendOfFriendList();
+        if (notFriendNotFriendOfFriend == null) return null;
+        List<FriendsResponse> result = notFriendNotFriendOfFriend.stream().filter(s -> s.isEnabled())
                 .map(s -> new FriendsResponse(
                         s.getId().toString(),
                         s.getUserProfile().getFullName(),
                         s.getUserProfile().getDescription(),
                         this.getFriendshipStatus(s)))
                 .collect(Collectors.toList());
+//        for (User nUser : notFriendNotFriendOfFriend) {
+//            FriendsResponse fr = new FriendsResponse(nUser.getId().toString(),
+//                    nUser.getUserProfile().getFullName(),
+//                    nUser.getUserProfile().getDescription(),
+//                    this.getFriendshipStatus(nUser));
+//            result.add(fr);
+//        }
+        return result;
 
     }
 
@@ -129,20 +139,24 @@ public class FriendshipService {
 
     public List<FriendsResponse> getFriendsOfFriends() {
         List<User> friendsOfFriends = this.getFriendsOfFriendsList();
-
-        return friendsOfFriends.stream()
+        List<FriendsResponse> result = friendsOfFriends.stream()
                 .map(s -> new FriendsResponse(
                         s.getId().toString(),
                         s.getUserProfile().getFullName(),
                         s.getUserProfile().getDescription(),
                         this.getFriendshipStatus(s)))
                 .collect(Collectors.toList());
+        return result;
     }
 
     public List<FriendsResponse> getFriendSuggestions() {
         List<FriendsResponse> friendsSuggestion = this.getFriendsOfFriends();
-        friendsSuggestion.addAll(this.getNotFriendNotFriendOfFriend());
-        return friendsSuggestion.stream().filter(s -> s.getStatus() == "notFriend").collect(Collectors.toList());
+        List<FriendsResponse> notFriendNotFriendOfFriend = this.getNotFriendNotFriendOfFriend();
+        friendsSuggestion.addAll(notFriendNotFriendOfFriend);
+        List<FriendsResponse> result = friendsSuggestion.stream().filter
+                        (s -> s.getStatus() == "notFriend")
+                .collect(Collectors.toList());
+        return result;
     }
 
     public boolean sendFriendshipRequest(User userReceiver) {

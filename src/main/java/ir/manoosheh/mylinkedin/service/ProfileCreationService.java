@@ -47,10 +47,28 @@ public class ProfileCreationService {
         */
 
             if (userProfileRepository.existsByUser(user)) {
-                log.error("Username '{}' already exists.", userSignupRequest.getUsername());
+//                log.error("Username '{}' already exists.", userSignupRequest.getUsername());
+                UserProfile profile = user.getUserProfile();
+                profile.setFirstName(userSignupRequest.getFirstName());
+                profile.setLastName(userSignupRequest.getLastName());
+                profile.setUsername(userSignupRequest.getUsername());
+                profile.setUserPosts(new ArrayList<>());
+                if (!Objects.isNull(userSignupRequest.getTitle())) {
+                    profile.setTitle(userSignupRequest.getTitle());
+                    profile.setCompany(userSignupRequest.getCompany());
+                    profile.setStartedAtMonth(userSignupRequest.getStartedAtMonth());
+                    profile.setStartedAtYear(userSignupRequest.getStartedAtYear());
+                    profile.setFinishedAtMonth(userSignupRequest.getFinishedAtMonth());
+                    profile.setFinishedAtYear(userSignupRequest.getFinishedAtYear());
+                }
+
+                if (!Objects.isNull(userSignupRequest.getDescription())) {
+                    profile.setDescription(userSignupRequest.getDescription());
+                }
+                userProfileRepository.save(profile);
                 user.setEnabled(true);
                 userRepository.save(user);
-                return new SubmitResponse(false, "Username is in use");
+                return new SubmitResponse(true, "Username has updated");
             }
 
             UserProfile profile = new UserProfile();

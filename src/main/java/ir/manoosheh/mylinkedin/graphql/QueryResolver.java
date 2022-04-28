@@ -3,8 +3,6 @@ package ir.manoosheh.mylinkedin.graphql;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import ir.manoosheh.mylinkedin.model.AuthProvider;
 import ir.manoosheh.mylinkedin.model.User;
-import ir.manoosheh.mylinkedin.model.UserPost;
-import ir.manoosheh.mylinkedin.model.UserProfile;
 import ir.manoosheh.mylinkedin.payload.graphql.response.*;
 import ir.manoosheh.mylinkedin.repository.UserPostRepository;
 import ir.manoosheh.mylinkedin.repository.UserProfileRepository;
@@ -16,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,45 +108,52 @@ public class QueryResolver implements GraphQLQueryResolver {
     @PreAuthorize("isAuthenticated()")
     public UserProfileResponse getUserProfile() {
         User user = userService.getUser();
-        UserProfile userProfile = user.getUserProfile();
-        UserProfileResponse profile = new UserProfileResponse();
-        profile.setFirstName(userProfile.getFirstName());
-        profile.setLastName(userProfile.getLastName());
-        profile.setId(String.valueOf(userProfile.getId()));
-        profile.setUsername(userProfile.getUsername());
-        profile.setDescription(userProfile.getDescription());
-        return profile;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public UserProfileResponse userProfile(Long id) {
-        try {
-            UserProfile userProfile = userRepository.findById(id).get().getUserProfile();
-            UserProfileResponse profile = new UserProfileResponse();
-            profile.setFirstName(userProfile.getFirstName());
-            profile.setLastName(userProfile.getLastName());
-            profile.setId(String.valueOf(userProfile.getId()));
-            profile.setUsername(userProfile.getUsername());
-            profile.setDescription(userProfile.getDescription());
-            List<UserPost> posts = userPostRepository.findUserPostsByUserProfileId(userProfile.getId());
-            List<UserPostOut> userPostOuts = new ArrayList<>();
-
-
-            for (UserPost item : posts) {
-                UserPostOut post = new UserPostOut();
-                post.setContent(item.getContent());
-                post.setCreatedAt(item.getCreatedDate());
-//                post.setFile(item.getFile());
-                userPostOuts.add(post);
-            }
-
-//            profile.setPosts(userPostOuts);
-            return profile;
-        } catch (Exception e) {
-//            return new UserProfileResponse(null, e.getMessage(), null, null, null, null);
-            return new UserProfileResponse(null, e.getMessage(), null, null, null);
+        UserProfileResponse userProfile = new UserProfileResponse();
+        if (user.getUserProfile() != null) {
+            userProfile.setFirstName(user.getUserProfile().getFirstName());
+            userProfile.setLastName(user.getUserProfile().getLastName());
+            userProfile.setUsername(user.getUserProfile().getUsername());
+            userProfile.setDescription(user.getUserProfile().getDescription());
+            userProfile.setTitle(user.getUserProfile().getTitle());
+            userProfile.setCompany(user.getUserProfile().getCompany());
+            userProfile.setStartedAtMonth(user.getUserProfile().getStartedAtMonth());
+            userProfile.setStartedAtYear(user.getUserProfile().getStartedAtYear());
+            userProfile.setFinishedAtMonth(user.getUserProfile().getFinishedAtMonth());
+            userProfile.setFinishedAtYear(user.getUserProfile().getFinishedAtYear());
         }
+
+        return userProfile;
     }
+
+//    @PreAuthorize("isAuthenticated()")
+//    public UserProfileResponse userProfile(Long id) {
+//        try {
+//            UserProfile userProfile = userRepository.findById(id).get().getUserProfile();
+//            UserProfileResponse profile = new UserProfileResponse();
+//            profile.setFirstName(userProfile.getFirstName());
+//            profile.setLastName(userProfile.getLastName());
+//            profile.setId(String.valueOf(userProfile.getId()));
+//            profile.setUsername(userProfile.getUsername());
+//            profile.setDescription(userProfile.getDescription());
+//            List<UserPost> posts = userPostRepository.findUserPostsByUserProfileId(userProfile.getId());
+//            List<UserPostOut> userPostOuts = new ArrayList<>();
+//
+//
+//            for (UserPost item : posts) {
+//                UserPostOut post = new UserPostOut();
+//                post.setContent(item.getContent());
+//                post.setCreatedAt(item.getCreatedDate());
+////                post.setFile(item.getFile());
+//                userPostOuts.add(post);
+//            }
+//
+////            profile.setPosts(userPostOuts);
+//            return profile;
+//        } catch (Exception e) {
+////            return new UserProfileResponse(null, e.getMessage(), null, null, null, null);
+//            return new UserProfileResponse(null, e.getMessage(), null, null, null);
+//        }
+//    }
 
 //    @PreAuthorize("isAuthenticated()")
 //    public CompanyProfileResponse companyProfile(Long id) {

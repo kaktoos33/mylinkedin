@@ -62,8 +62,9 @@ public class AuthService {
             } else
                 return new LoginResponse(true, "Tokens have been generated",
                         accessToken, "refreshToken",
-                        new UserResponse(user.getId().toString(), user.getIsCompany(), false));
-
+                        new UserResponse(user.getId().toString(), user.getIsCompany(),
+                                "name",
+                                "description", false));
         } catch (Exception e) {
             log.error("'{}' has failed to logged in.", loginRequest.getEmail());
             return new LoginResponse(false, e.getMessage(),
