@@ -1,0 +1,70 @@
+version: '3.7'
+
+# Define services
+services:
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the backend service
+    #    container_name: linkedin2
+    build:
+      context: . # Use an image built from the specified dockerfile in the `polling-app-server` directory.
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: always
+    depends_on:
+      - db # This service depends on mysql. Start that first.
+    environment: # Pass environment variables to the service
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/linkedin_oauth2?createDatabaseIfNotExist=true
+    #      SPRING_DATASOURCE_USERNAME: adminDocker
+    #      SPRING_DATASOURCE_PASSWORD: adminDocker
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - backend
+      - frontend
+
+  # Frontend Service
+  app-client:
+    #    container_name: react2
+    build:
+      context: ../g5-linkedin-front-end # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_API_URL: http://localhost:8080/linkedin
+    ports:
+      - "80:80" # Map the exposed port 80 on the container to port 9090 on the host machine
+    restart: always
+    depends_on:
+      - app-server
+    networks:
+      - frontend
+      - outside
+
+  # Database Service (Mysql)
+  db:
+    #    container_name: mariadb552
+    image: mariadb:5.5
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: linkedin_oauth2
+      MYSQL_USER: adminDocker
+      MYSQL_PASSWORD: adminDocker
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - backend
+
+# Volumes
+volumes:
+  db-data:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    # Use a custom driver
+    driver: bridge
+  outside:

@@ -16,11 +16,11 @@ spring:
     max-swallow-size: -1
   datasource:
     #    url: jdbc:mariadb://myMariadb55:3306/linkedin_oauth2?createDatabaseIfNotExist=true
-    url: jdbc:mariadb://localhost:3306/linkedin_oauth2?createDatabaseIfNotExist=true
-    username: admin
-    password: admin
-    #    username: ulinkedin41
-    #    password: p224702f
+    url: jdbc:mariadb://localhost:3306/linkedin
+    #      username: admin
+    #      password: admin
+    username: ulinkedin41
+    password: p224702f
     driver-class-name: org.mariadb.jdbc.Driver
 
   jpa:
@@ -70,7 +70,7 @@ app:
     tokenSecret: 04ca023b39512e46d0c2cf4b48d5aac61d34302994c87ed4eff225dcf3b0a218739f3897051a057f9b846a69ea2927a587044164b7bae5e1306219d50b588cb1
     tokenExpirationMsec: 864000000
   cors:
-    allowedOrigins: http://localhost:3000,http://localhost:8080,http://localhost
+    allowedOrigins: http://localhost:3000,http://localhost:8080,http://localhost,http://ostadproje.ir
   oauth2:
     # After successfully authenticating with the OAuth2 Provider,
     # we'll be generating an auth token for the user and sending the token to the

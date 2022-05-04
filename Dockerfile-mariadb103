@@ -1,0 +1,10 @@
+FROM mariadb:latest
+
+MAINTAINER "med.anooshe@gmail.com"
+
+ENV MARIADB_USER="admin" MARIADB_PASSWORD="admin" MYSQL_ROOT_PASSWORD="admin" MARIADB_DATABASE="linkedin_oauth2"
+
+VOLUME 'db103-vol:/var/lib/mysql'
+
+EXPOSE 3306
+

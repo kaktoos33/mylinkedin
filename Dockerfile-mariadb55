@@ -1,0 +1,10 @@
+FROM mariadb:5.5
+
+MAINTAINER "med.anooshe@gmail.com"
+
+ENV MYSQL_USER="admin" MYSQL_PASSWORD="admin" MYSQL_ROOT_PASSWORD="admin" MYSQL_DATABASE="linkedin_oauth2"
+
+VOLUME 'db55-volume:/var/lib/mysql'
+
+EXPOSE 3306
+

@@ -8,6 +8,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 @SpringBootApplication
 @EnableConfigurationProperties(AppProperties.class)
 public class MyLinkedinApplication {
@@ -20,6 +24,11 @@ public class MyLinkedinApplication {
         SingletonManager manager = new SingletonManager();
         manager.setCloudinary(cloudinary);
         manager.init();
+        String path = "uploads";
+        File pathAsFile = new File(path);
+        if (!Files.exists(Paths.get(path))) {
+            pathAsFile.mkdir();
+        }
         SpringApplication.run(MyLinkedinApplication.class, args);
     }
 

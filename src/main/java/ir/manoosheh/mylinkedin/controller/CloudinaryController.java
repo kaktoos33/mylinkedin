@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-//@RequestMapping("/cloud")
+@RequestMapping("/cloud")
 public class CloudinaryController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());

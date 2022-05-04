@@ -8,6 +8,7 @@ import ir.manoosheh.mylinkedin.security.oauth2.HttpCookieOAuth2AuthorizationRequ
 import ir.manoosheh.mylinkedin.security.oauth2.OAuth2AuthenticationFailureHandler;
 import ir.manoosheh.mylinkedin.security.oauth2.OAuth2AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -46,6 +47,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
+    @Value("${app.cors.allowedOrigins}")
+    private String[] allowedOrigins;
+
     @Bean
     public TokenAuthenticationFilter tokenAuthenticationFilter() {
         return new TokenAuthenticationFilter();
@@ -83,7 +87,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
+                .cors()//.configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -135,7 +139,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .deleteCookies("JSESSIONID")
         ;
 
+
         // Add our custom Token based authentication filter
         http.addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
+
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        final CorsConfiguration config = new CorsConfiguration();
+//
+//        config.setAllowedOrigins(Arrays.stream(allowedOrigins).collect(Collectors.toList()));
+////        config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://app-client"
+////                , "http://ostadproje.ir"));
+//        config.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS", "DELETE", "PUT", "PATCH"));
+//        config.setAllowCredentials(true);
+//        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+//        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", config);
+//
+//        return source;
+//
+//    }
 }
