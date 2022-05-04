@@ -11,4 +11,26 @@ public class AppConfig {
 //        multipartResolver.setMaxUploadSize(5242880);
 //        return multipartResolver;
 //    }
+
+//    private final long MAX_AGE_SECS = 3600;
+//
+//    @Value("${app.cors.allowedOrigins}")
+//    private String[] allowedOrigins;
+//
+//    @Bean
+//    public WebMvcConfigurer corsConfigurer() {
+//        return new WebMvcConfigurer() {
+//
+//            @Override
+//            public void addCorsMappings(CorsRegistry registry) {
+//                registry.addMapping("/**")
+//                        .allowedOrigins(allowedOrigins)
+//                        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+//                        .allowedHeaders("*")
+//                        .allowCredentials(true)
+//                        .maxAge(MAX_AGE_SECS);
+//            }
+//        };
+//    }
+
 }

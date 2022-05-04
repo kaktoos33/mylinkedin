@@ -29,7 +29,7 @@ services:
       context: ../g5-linkedin-front-end # Use an image built from the specified dockerfile in the `polling-app-client` directory.
       dockerfile: Dockerfile
       args:
-        REACT_APP_API_URL: http://localhost:8080/linkedin
+        REACT_APP_API_URL: http://app-server:8080/linkedin
     ports:
       - "80:80" # Map the exposed port 80 on the container to port 9090 on the host machine
     restart: always
@@ -37,7 +37,7 @@ services:
       - app-server
     networks:
       - frontend
-      - outside
+  #      - outside
 
   # Database Service (Mysql)
   db:
@@ -63,8 +63,8 @@ volumes:
 # Networks to be created to facilitate communication between containers
 networks:
   backend:
-    driver: bridge
+  #    driver: bridge
   frontend:
-    # Use a custom driver
-    driver: bridge
-  outside:
+  # Use a custom driver
+#    driver: bridge
+#  outside:
