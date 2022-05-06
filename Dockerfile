@@ -6,12 +6,14 @@ COPY --chown=gradle:gradle . /home/gradle/src
 
 WORKDIR /home/gradle/src
 
-RUN gradle clean bootWar -x test -Dspring.profiles.active=lprod
+RUN gradle clean bootJar -x test -Dspring.profiles.active=lprod
 
-FROM tomcat:8.5
-
-COPY --from=build /home/gradle/src/build/libs/*.war /usr/local/tomcat/webapps/linkedin.war
+FROM openjdk:8-jre-slim
 
 EXPOSE 8080
 
-CMD ["catalina.sh", "run"]
+RUN mkdir /app
+
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/linkedin.jar
+
+ENTRYPOINT ["java", "-jar","/app/linkedin.jar"]
