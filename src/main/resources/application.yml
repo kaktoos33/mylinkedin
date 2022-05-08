@@ -17,8 +17,8 @@ spring:
   datasource:
     #    url: jdbc:mariadb://myMariadb55:3306/linkedin_oauth2?createDatabaseIfNotExist=true
     url: jdbc:mariadb://localhost:3306/linkedin_oauth2?createDatabaseIfNotExist=true
-    username: adminDocker
-    password: adminDocker
+    username: admin
+    password: admin
     #    username: ulinkedin41
     #    password: p224702f
     driver-class-name: org.mariadb.jdbc.Driver

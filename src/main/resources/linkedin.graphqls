@@ -32,7 +32,18 @@ type Mutation{
     addTags(tags:[String]!):Boolean!
     addSkills(skills:[String]!):Boolean!
 }
-#
+# type Media
+input MediaInput{
+    fileName:String
+    size:String
+    type:String
+}
+type MediaOutput{
+    id:ID
+    fileName:String
+    size:String
+    type:String
+}
 # type FriendsResponse
 type FriendsResponse{
     userId:ID
@@ -113,7 +124,7 @@ input UserProfileRequest{
 # Input for new user post
 input NewUserPostRequest{
     content:String
-    media:String
+    media:MediaInput
     #file:Upload
 }
 ## Input for new company post
@@ -138,7 +149,7 @@ type UserPostOut{
     userPostId:String
     content:String
     createdAt:String
-    media:String
+    media:MediaOutput
     #    file:String
 }
 #

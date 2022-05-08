@@ -1,5 +1,7 @@
 package ir.manoosheh.mylinkedin.service;
 
+import ir.manoosheh.mylinkedin.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -11,11 +13,16 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 @Service
 public class FilesStorageServiceImpl implements FilesStorageService {
     private final Path root = Paths.get("uploads");
+
+    @Autowired
+    UserService userService;
+
 
     @Override
     public void init() {
@@ -27,11 +34,29 @@ public class FilesStorageServiceImpl implements FilesStorageService {
     }
 
     @Override
-    public void save(MultipartFile file) {
+    public String save(MultipartFile file) {
+
         try {
-            Files.copy(file.getInputStream(), this.root.resolve(file.getOriginalFilename()));
-        } catch (Exception e) {
-            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
+            User user = userService.getUser();
+
+            if (user != null) {
+                UUID uuid = UUID.randomUUID();
+                int hasExtension = file.getOriginalFilename().lastIndexOf('.');
+                String newFileName = uuid.toString();
+                if (hasExtension > 0)
+                    newFileName += file.getOriginalFilename().substring(hasExtension);
+                Files.copy(file.getInputStream(), this.root.resolve(newFileName));
+                return newFileName;
+
+            } else {
+//                logger.error("Error: a not authenticated user tried to upload a file (email: " + user.getEmail() + ")");
+                return null;
+            }
+
+
+        } catch (Exception ex) {
+            return "Could not store the file. Error: " + ex.getMessage();
+//            throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }
     }
 

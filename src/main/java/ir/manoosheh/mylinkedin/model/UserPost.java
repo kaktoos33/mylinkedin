@@ -26,7 +26,10 @@ public class UserPost implements Comparable<UserPost> {
 
     //    @Column(name="content",columnDefinition="ٰVARCHAR(255) CHARACTER SET utf8 COLLATE utf8_persian_ci")
     private String content;
-    private String media;
+
+    @OneToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id", unique = true)
+    private Media media;
 
     private String file;
 

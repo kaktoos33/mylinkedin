@@ -1,9 +1,11 @@
 package ir.manoosheh.mylinkedin.service;
 
+import ir.manoosheh.mylinkedin.model.Media;
 import ir.manoosheh.mylinkedin.model.User;
 import ir.manoosheh.mylinkedin.model.UserPost;
 import ir.manoosheh.mylinkedin.payload.graphql.request.NewUserPostRequest;
 import ir.manoosheh.mylinkedin.payload.graphql.response.SubmitResponse;
+import ir.manoosheh.mylinkedin.repository.MediaRepository;
 import ir.manoosheh.mylinkedin.repository.UserPostRepository;
 import ir.manoosheh.mylinkedin.repository.UserRepository;
 import lombok.Data;
@@ -28,6 +30,8 @@ public class PostCreationService {
     @Autowired
     final UserPostRepository userPostRepository;
     @Autowired
+    final private MediaRepository mediaRepository;
+    @Autowired
     final UserService userService;
 //    final UploadService uploadService;
 //    final CompanyRepository companyRepository;
@@ -45,7 +49,12 @@ public class PostCreationService {
         UserPost post = new UserPost();
         post.setContent(newUserPostRequest.getContent());
         post.setCreatedDate(new Date());
-        post.setMedia(newUserPostRequest.getMedia());
+        Media newMedia = new Media(newUserPostRequest.getMedia().getFileName()
+                , Long.valueOf(newUserPostRequest.getMedia().getSize())
+                , newUserPostRequest.getMedia().getType());
+        newMedia.setUserPost(post);
+        mediaRepository.save(newMedia);
+        post.setMedia(newMedia);
         post.setUserProfile(user.getUserProfile());
 
         userPostRepository.save(post);

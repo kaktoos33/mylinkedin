@@ -3,6 +3,7 @@ package ir.manoosheh.mylinkedin.service;
 import ir.manoosheh.mylinkedin.model.User;
 import ir.manoosheh.mylinkedin.model.UserPost;
 import ir.manoosheh.mylinkedin.model.UserProfile;
+import ir.manoosheh.mylinkedin.payload.graphql.response.MediaOutput;
 import ir.manoosheh.mylinkedin.payload.graphql.response.UserPostOut;
 import ir.manoosheh.mylinkedin.repository.UserPostRepository;
 import lombok.Data;
@@ -38,17 +39,20 @@ public class UserPostService {
         }
         Comparator<UserPostOut> comparatorUserPostOnDate =
                 Comparator.naturalOrder();
-        return userPosts.stream()
+        List<UserPostOut> result = userPosts.stream()
                 .map(s -> new UserPostOut(
                         friendshipService
                                 .convertUserToFriendResponse(s.getUserProfile().getUser()),
                         s.getId().toString(),
                         s.getContent(),
-                        s.getMedia(),
+                        new MediaOutput(s.getMedia().getId()
+                                , s.getMedia().getFilename()
+                                , s.getMedia().getType()
+                                , String.valueOf(s.getMedia().getSize())),
                         s.getCreatedDate()
                 ))
                 .sorted(comparatorUserPostOnDate.reversed())
                 .collect(Collectors.toList());
-//        return null;
+        return result;
     }
 }

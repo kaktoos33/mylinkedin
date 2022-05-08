@@ -114,12 +114,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.png",
                         "/**/*.gif",
                         "/**/*.svg",
+                        "/**/*.mp4",
                         "/**/*.jpg",
                         "/**/*.html",
                         "/**/*.css",
                         "/**/*.js")
                 .permitAll()
-                .antMatchers("/auth/**", "/oauth2/**", "/graphql")
+                .antMatchers("/auth/**", "/oauth2/**", "/graphql", "/file/download/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

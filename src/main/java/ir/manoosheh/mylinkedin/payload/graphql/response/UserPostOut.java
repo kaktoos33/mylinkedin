@@ -14,7 +14,7 @@ public class UserPostOut implements Comparable<UserPostOut> {
     private FriendsResponse postOwner;
     private String userPostId;
     private String content;
-    private String media;
+    private MediaOutput media;
     private Date createdAt;
 
     @Override
