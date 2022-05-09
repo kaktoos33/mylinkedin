@@ -43,6 +43,7 @@ services:
   # Database Service (Mysql)
   db:
     image: mariadb:5.5
+    container_name: "db"
     ports:
       - "3306:3306"
     restart: always
