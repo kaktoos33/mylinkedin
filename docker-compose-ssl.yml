@@ -1,0 +1,84 @@
+# Docker Compose file Reference (https://docs.docker.com/compose/compose-file/)
+
+version: '3.7'
+
+# Define services
+services:
+  nginx:
+    image: nginx:1.17.0-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../g5-linkedin-front-end/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certbot/conf:/etc/nginx/ssl/:ro
+      - ./certbot/www:/var/www/certbot/:ro
+      - frontend:/usr/share/nginx/html
+    depends_on:
+      - app-client
+      - app-server
+      - certbot
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    restart: always
+    volumes:
+      - ./certbot/conf:/etc/letsencrypt/:rw
+      - ./certbot/www:/var/www/certbot/:rw
+    command: certonly --webroot -w /var/www/certbot --force-renewal --email med.anooshe@gmail.com -d manoosheh.ir --agree-tos
+
+  # App backend service
+  app-server:
+    # Configuration for building the docker image for the backend service
+    build:
+      context: . # Use an image built from the specified dockerfile in the `polling-app-server` directory.
+      dockerfile: Dockerfile
+    container_name: "app-server"
+    ports:
+      - "8080:8080" # Forward the exposed port 8080 on the container to port 8080 on the host machine
+    restart: always
+    depends_on:
+      - db # This service depends on mysql. Start that first.
+    environment: # Pass environment variables to the service
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/linkedin_oauth2?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: adminDocker
+      SPRING_DATASOURCE_PASSWORD: adminDocker
+    networks: # Networks to join (Services on the same network can communicate with each other using their name)
+      - frontend
+
+  # Frontend Service
+  app-client:
+    build:
+      context: ../g5-linkedin-front-end # Use an image built from the specified dockerfile in the `polling-app-client` directory.
+      dockerfile: Dockerfile-ssl
+    container_name: "app-client"
+    volumes:
+      - frontend:/app/build
+
+  db:
+    image: mariadb:5.5
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_DATABASE: linkedin_oauth2
+      MYSQL_USER: adminDocker
+      MYSQL_PASSWORD: adminDocker
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db3-data:/var/lib/mysql
+    networks:
+      - backend
+
+# Volumes
+volumes:
+  db3-data:
+  frontend:
+
+# Networks to be created to facilitate communication between containers
+networks:
+  backend:
+  frontend:
